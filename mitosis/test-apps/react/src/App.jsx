@@ -1,11 +1,9 @@
-import { AutoComplete, Todos } from '@mitosis/library-react';
+import { LoginForm } from '@mitosis/library-react';
 
 function App() {
   return (
     <div>
-      <div>Welcome to React.</div>
-      <AutoComplete />
-      <Todos />
+      <LoginForm/>
     </div>
   );
 }

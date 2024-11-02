@@ -1,6 +1,6 @@
-import { Status } from "./core/models/Result.ts";
-import { Task } from "./core/models/Task.ts";
-import { Workflow } from "./core/models/Workflow.ts";
+import { Status } from "@nextep/core/models/Result.ts";
+import { Task } from "@nextep/core/models/Task.ts";
+import { Workflow } from "@nextep/core/models/Workflow.ts";
 
 const tasks: Task[] = [];
 tasks.push(new Task());
