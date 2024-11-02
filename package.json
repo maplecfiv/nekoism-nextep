@@ -1,0 +1,27 @@
+{
+  "name": "nekoism-nextep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon main.ts",
+    "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
+    "mitosis-start": "cd mitosis/library && npm run start",
+    "mitosis-start-react": "cp mitosis/library/src/output.css mitosis/test-apps/react/ && cd mitosis/test-apps/react && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "core",
+    "mitosis",
+    "mitosis/library/packages/*",
+    "mitosis/library",
+    "mitosis/test-apps/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  }
+}

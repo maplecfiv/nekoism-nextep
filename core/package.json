@@ -1,0 +1,14 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc index.ts --declaration --allowJs --outDir dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true
+}
