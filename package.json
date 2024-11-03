@@ -7,7 +7,7 @@
     "start": "nodemon main.ts",
     "build": "npm run build --workspaces --if-present && npm run test && rm -rf dist && npm run lint && tsc -b",
     "mitosis-start": "cd mitosis/library && npm run start",
-    "mitosis-start-react": "cp mitosis/library/src/output.css mitosis/test-apps/react/ && cd mitosis/test-apps/react && npm run dev"
+    "mitosis-start-react": "cd mitosis/test-apps/react && npm run dev"
   },
   "keywords": [],
   "author": "",

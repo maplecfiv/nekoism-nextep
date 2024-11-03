@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "watch \"npm run build\" ./src",
-    "build": "npx tailwindcss -i ./src/input.css -o ./src/output.css && mitosis build --c mitosis.config.cjs",
+    "build": "npx tailwindcss -i ./src/input.css -o ./src/output.css && cp ./src/output.css ../test-apps/react/ && mitosis build --c mitosis.config.cjs",
     "lint": "eslint"
   },
   "type": "module",
@@ -14,6 +14,7 @@
     "@builder.io/eslint-plugin-mitosis": "^0.0.15",
     "@builder.io/mitosis": "latest",
     "@builder.io/mitosis-cli": "latest",
+    "@nextep/core": "file:../../core",
     "eslint": "^8.51.0"
   },
   "devDependencies": {

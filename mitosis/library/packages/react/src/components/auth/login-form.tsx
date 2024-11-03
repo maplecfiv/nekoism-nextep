@@ -1,6 +1,26 @@
+"use client";
 import * as React from "react";
 
-function LoginForm(props: any) {
+export type Props = {
+  authService: AuthService;
+};
+import { User } from "@nextep/core/models/User";
+import { StoreType } from "../../pages/main-page";
+import { AuthService } from "../../service/AuthService";
+
+function LoginForm(props: Props) {
+  function setEmail(_email: string) {
+    console.log(_email);
+  }
+
+  function setPassword(_password: string) {
+    console.log(_password);
+  }
+
+  function processSubmit() {
+    props.authService.login("abc123");
+  }
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -14,7 +34,13 @@ function LoginForm(props: any) {
         </h2>
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="post">
+        <form
+          className="space-y-6"
+          action="#"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div>
             <label
               htmlFor="email"
@@ -29,6 +55,9 @@ function LoginForm(props: any) {
                 type="email"
                 autoComplete="email"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
                 required
               />
             </div>
@@ -57,6 +86,9 @@ function LoginForm(props: any) {
                 type="password"
                 autoComplete="current-password"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
                 required
               />
             </div>
@@ -65,6 +97,9 @@ function LoginForm(props: any) {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={(event) => {
+                processSubmit();
+              }}
             >
               Sign in
             </button>

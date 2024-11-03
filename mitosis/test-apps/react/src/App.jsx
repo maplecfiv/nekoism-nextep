@@ -1,9 +1,9 @@
-import { LoginForm } from '@mitosis/library-react';
+import { MainPage } from '@mitosis/library-react';
 
 function App() {
   return (
     <div>
-      <LoginForm/>
+      <MainPage />
     </div>
   );
 }

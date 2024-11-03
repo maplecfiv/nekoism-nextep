@@ -1,4 +1,5 @@
-export { default as LoginForm } from './pages/login-page/login-form.lite'
-
-export { default as AutoComplete } from './autocomplete/autocomplete.lite';
-export { default as Todos } from './todo-app/todo-app.lite';
+export { default as LoginForm } from './components/auth/login-form.lite'
+export { default as TicketDetails } from './components/ticket/ticket-details.lite'
+export { default as TicketList } from './components/ticket/ticket-list.lite'
+export { default as NavigationBar } from './components/navi/navigation-bar.lite'
+export { default as MainPage } from './pages/main-page.lite'
