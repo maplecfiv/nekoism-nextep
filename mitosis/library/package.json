@@ -15,7 +15,8 @@
     "@builder.io/mitosis": "latest",
     "@builder.io/mitosis-cli": "latest",
     "@nextep/core": "file:../../core",
-    "eslint": "^8.51.0"
+    "eslint": "^8.51.0",
+    "sortablejs": "^1.15.3"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.14",

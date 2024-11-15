@@ -4,6 +4,7 @@ import NavigationBar from '../components/navi/navigation-bar.lite';
 import LoginForm from '../components/auth/login-form.lite';
 import { User } from '@nextep/core/models/User'
 import { AuthService } from '../service/AuthService';
+import FormEditor from '../components/form/form-editor.lite';
 
 export type StoreType = {
     userToken: string,
@@ -26,6 +27,7 @@ export default function MainPage() {
             <Show when={userToken.length != 0}>
                 <NavigationBar authService={state.authService}  />
                 <TicketList />
+                <FormEditor/>
             </Show>
         </div>
     );

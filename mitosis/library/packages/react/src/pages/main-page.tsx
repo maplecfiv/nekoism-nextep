@@ -11,6 +11,7 @@ import NavigationBar from "../components/navi/navigation-bar";
 import LoginForm from "../components/auth/login-form";
 import { User } from "@nextep/core/models/User";
 import { AuthService } from "../service/AuthService";
+import FormEditor from "../components/form/form-editor";
 
 function MainPage(props: any) {
   const [userToken, setUserToken] = useState(() => "");
@@ -26,6 +27,7 @@ function MainPage(props: any) {
         <>
           <NavigationBar authService={authService} />
           <TicketList />
+          <FormEditor />
         </>
       ) : null}
     </div>
