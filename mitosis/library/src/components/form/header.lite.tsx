@@ -4,7 +4,7 @@ import {
     HEADER_LEVELS,
 } from "@nextep/core/models/TicketItem";
 
-export function Header(props) {
+export default function Header(props) {
     const header: TicketItemHeader = props.component;
     const language: LANGUAGES = props.language;
 

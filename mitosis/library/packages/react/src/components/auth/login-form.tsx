@@ -2,10 +2,11 @@
 import * as React from "react";
 
 export type Props = {
-  authService: AuthService;
+  dispatchService: DispatchService;
 };
 import { User } from "@nextep/core/models/User";
 import { StoreType } from "../../pages/main-page";
+import { DispatchService } from "../../service/DispatchService";
 import { AuthService } from "../../service/AuthService";
 
 function LoginForm(props: Props) {
@@ -18,7 +19,11 @@ function LoginForm(props: Props) {
   }
 
   function processSubmit() {
-    props.authService.login("abc123");
+    props.dispatchService.onMessage(
+      AuthService.getStaticName(),
+      AuthService.LOGIN,
+      new Map([[AuthService.KEY_USER_TOKEN, "abc123"]])
+    );
   }
 
   return (

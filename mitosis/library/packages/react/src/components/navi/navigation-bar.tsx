@@ -3,9 +3,10 @@ import * as React from "react";
 import { useState } from "react";
 
 export type Props = {
-  authService: AuthService;
+  dispatchService: DispatchService;
 };
 import { StoreType } from "../../pages/main-page";
+import { DispatchService } from "../../service/DispatchService";
 import { AuthService } from "../../service/AuthService";
 
 function NavigationBar(props: Props) {
@@ -22,7 +23,10 @@ function NavigationBar(props: Props) {
   }
 
   function logout() {
-    props.authService.logout();
+    props.dispatchService.onMessage(
+      AuthService.getStaticName(),
+      AuthService.LOGOUT
+    );
   }
 
   return (
@@ -45,7 +49,7 @@ function NavigationBar(props: Props) {
                 className="block h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="1.5"
+                stroke-width="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
                 data-slot="icon"
@@ -60,7 +64,7 @@ function NavigationBar(props: Props) {
                 className="hidden h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="1.5"
+                stroke-width="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
                 data-slot="icon"
@@ -122,7 +126,7 @@ function NavigationBar(props: Props) {
                 className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="1.5"
+                stroke-width="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
                 data-slot="icon"

@@ -12,20 +12,33 @@ import LoginForm from "../components/auth/login-form";
 import { User } from "@nextep/core/models/User";
 import { AuthService } from "../service/AuthService";
 import FormEditor from "../components/form/form-editor";
+import Label from "../components/form/label";
+import { PAGES, PageService } from "../service/PageService";
+import { DispatchService } from "../service/DispatchService";
 
 function MainPage(props: any) {
   const [userToken, setUserToken] = useState(() => "");
 
-  const [authService, setAuthService] = useState(
-    () => new AuthService(setUserToken)
+  const [page, setPage] = useState(() => PAGES.LOGIN);
+
+  const [dispatchService, setDispatchService] = useState(
+    () =>
+      new DispatchService([
+        new AuthService(setUserToken),
+        new PageService(setPage),
+      ])
   );
 
   return (
     <div>
-      {userToken.length == 0 ? <LoginForm authService={authService} /> : null}
-      {userToken.length != 0 ? (
+      {page == PAGES.LOGIN ? (
+        <LoginForm dispatchService={dispatchService} />
+      ) : null}
+      {page != PAGES.LOGIN ? (
+        <NavigationBar dispatchService={dispatchService} />
+      ) : null}
+      {page == PAGES.DASHBOARD ? (
         <>
-          <NavigationBar authService={authService} />
           <TicketList />
           <FormEditor />
         </>

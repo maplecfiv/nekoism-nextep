@@ -1,7 +1,7 @@
 import { LANGUAGES } from "@nextep/core/models/Language";
 import { Label as TicketItemLabel } from "@nextep/core/models/TicketItem";
 
-export function Label(props) {
+export default function Label(props) {
     const label: TicketItemLabel = props.component;
     const language: LANGUAGES = props.language;
 
