@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export type StoreType = {
   userToken: string;
@@ -9,25 +9,37 @@ export type StoreType = {
 import TicketList from "../components/ticket/ticket-list";
 import NavigationBar from "../components/navi/navigation-bar";
 import LoginForm from "../components/auth/login-form";
-import { User } from "@nextep/core/models/User";
 import { AuthService } from "../service/AuthService";
+import { TicketService } from "../service/TicketService";
 import FormEditor from "../components/form/form-editor";
-import Label from "../components/form/label";
+import Form from "../components/form/form";
 import { PAGES, PageService } from "../service/PageService";
 import { DispatchService } from "../service/DispatchService";
+import { BaseService, ServiceId } from "../service/BaseService";
+import { LANGUAGES } from "@nextep/core/models/Language";
 
 function MainPage(props: any) {
-  const [userToken, setUserToken] = useState(() => "");
-
   const [page, setPage] = useState(() => PAGES.LOGIN);
 
+  const [userToken, setUserToken] = useState(() => "");
+
+  const [ticket, setTicket] = useState(() => TicketService.initTicket());
+
+  const [language, setLanguage] = useState(() => LANGUAGES.EN_US);
+
   const [dispatchService, setDispatchService] = useState(
-    () =>
-      new DispatchService([
-        new AuthService(setUserToken),
-        new PageService(setPage),
-      ])
+    () => new DispatchService()
   );
+
+  useEffect(() => {
+    dispatchService.setServices(
+      new Map<ServiceId, BaseService>([
+        [AuthService.SERVICE_ID, new AuthService(userToken, setUserToken)],
+        [PageService.SERVICE_ID, new PageService(setPage)],
+        [TicketService.SERVICE_ID, new TicketService(setTicket)],
+      ])
+    );
+  }, []);
 
   return (
     <div>
@@ -38,10 +50,7 @@ function MainPage(props: any) {
         <NavigationBar dispatchService={dispatchService} />
       ) : null}
       {page == PAGES.DASHBOARD ? (
-        <>
-          <TicketList />
-          <FormEditor />
-        </>
+        <Form language={language} component={ticket} />
       ) : null}
     </div>
   );

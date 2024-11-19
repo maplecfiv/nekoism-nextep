@@ -18,7 +18,7 @@ export default function LoginForm(props: Props) {
         },
         processSubmit() {
             props.dispatchService.onMessage(
-                AuthService.getStaticName(),
+                AuthService.SERVICE_ID,
                 AuthService.LOGIN,
                 new Map([
                     [AuthService.KEY_USER_TOKEN, "abc123"],
@@ -28,102 +28,64 @@ export default function LoginForm(props: Props) {
     });
 
     return (
-        <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                    class="mx-auto h-10 w-auto"
-                    src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                />
-                <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-                    !Sign in to your account
-                </h2>
-            </div>
-
-            <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form
-                    class="space-y-6"
-                    action="#"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                    }}
-                >
-                    <div>
-                        <label
-                            for="email"
-                            class="block text-sm/6 font-medium text-gray-900"
-                        >
-                            Email address
-                        </label>
-                        <div class="mt-2">
+        <div className="hero bg-base-200 min-h-screen">
+            <div className="hero-content flex-col lg:flex-row-reverse">
+                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                    <form
+                        className="card-body"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                        }}
+                        action="#"
+                    >
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Email</span>
+                            </label>
                             <input
                                 onChange={(event) => {
                                     state.setEmail(event.target.value);
                                 }}
-                                id="email"
-                                name="email"
                                 type="email"
-                                autocomplete="email"
+                                placeholder="email"
+                                className="input input-bordered"
                                 required
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                             />
                         </div>
-                    </div>
-
-                    <div>
-                        <div class="flex items-center justify-between">
-                            <label
-                                for="password"
-                                class="block text-sm/6 font-medium text-gray-900"
-                            >
-                                Password
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Password</span>
                             </label>
-                            <div class="text-sm">
-                                <a
-                                    href="#"
-                                    class="font-semibold text-indigo-600 hover:text-indigo-500"
-                                >
-                                    Forgot password?
-                                </a>
-                            </div>
-                        </div>
-                        <div class="mt-2">
                             <input
                                 onChange={(event) => {
                                     state.setPassword(event.target.value);
                                 }}
-                                id="password"
-                                name="password"
                                 type="password"
-                                autocomplete="current-password"
+                                placeholder="password"
+                                className="input input-bordered"
                                 required
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                             />
+                            <label className="label">
+                                <a
+                                    href="#"
+                                    className="label-text-alt link link-hover"
+                                >
+                                    Forgot password?
+                                </a>
+                            </label>
                         </div>
-                    </div>
-
-                    <div>
-                        <button
-                            onClick={() => {
-                                state.processSubmit();
-                            }}
-                            type="submit"
-                            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Sign in
-                        </button>
-                    </div>
-                </form>
-
-                <p class="mt-10 text-center text-sm/6 text-gray-500">
-                    Not a member?
-                    <a
-                        href="#"
-                        class="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                        Start a 14 day free trial
-                    </a>
-                </p>
+                        <div className="form-control mt-6">
+                            <button
+                                onClick={() => {
+                                    state.processSubmit();
+                                }}
+                                className="btn btn-primary"
+                            >
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

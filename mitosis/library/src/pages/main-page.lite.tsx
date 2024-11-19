@@ -1,14 +1,16 @@
-import { Show, useState, useStore } from "@builder.io/mitosis";
+import { onMount, Show, useState, useStore } from "@builder.io/mitosis";
 import TicketList from "../components/ticket/ticket-list.lite";
 import NavigationBar from "../components/navi/navigation-bar.lite";
 import LoginForm from "../components/auth/login-form.lite";
-import { User } from "@nextep/core/models/User";
 import { AuthService } from "../service/AuthService";
+import { TicketService } from "../service/TicketService";
 import FormEditor from "../components/form/form-editor.lite";
+import Form from "../components/form/form.lite";
 
-import Label from "../components/form/label.lite";
 import { PAGES, PageService } from "../service/PageService";
 import { DispatchService } from "../service/DispatchService";
+import { BaseService, ServiceId } from "../service/BaseService";
+import { LANGUAGES } from "@nextep/core/models/Language";
 
 export type StoreType = {
     userToken: string;
@@ -16,13 +18,28 @@ export type StoreType = {
 };
 
 export default function MainPage() {
-    const [userToken, setUserToken] = useState("");
-    const [page, setPage] = useState(PAGES.LOGIN);
-
+    const [page,setPage] = useState(PAGES.LOGIN);
+    const [userToken,setUserToken] = useState('');
+    const [ticket,setTicket] = useState(TicketService.initTicket());
+    const [language, setLanguage] = useState(LANGUAGES.EN_US)
+    
     const state = useStore({
-        dispatchService: new DispatchService(
-            [new AuthService(setUserToken), new PageService(setPage)],
-        ),
+        dispatchService: new DispatchService(),
+    });
+
+    onMount(() => {
+        state.dispatchService.setServices(
+            new Map<ServiceId, BaseService>([[
+                AuthService.SERVICE_ID,
+                new AuthService(userToken, setUserToken),
+            ], [
+                PageService.SERVICE_ID,
+                new PageService(setPage),
+            ], [
+                TicketService.SERVICE_ID,
+                new TicketService(setTicket),
+            ]]),
+        );
     });
 
     return (
@@ -34,8 +51,11 @@ export default function MainPage() {
                 <NavigationBar dispatchService={state.dispatchService} />
             </Show>
             <Show when={page == PAGES.DASHBOARD}>
-                <TicketList />
-                <FormEditor />
+                <Form
+                    language={language}
+                    component={ticket}
+                >
+                </Form>
             </Show>
         </div>
     );

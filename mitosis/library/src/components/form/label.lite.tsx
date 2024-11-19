@@ -1,15 +1,14 @@
-import { LANGUAGES } from "@nextep/core/models/Language";
-import { Label as TicketItemLabel } from "@nextep/core/models/TicketItem";
+import { Label as TicketComponentLabel } from "@nextep/core/models/TicketComponent";
 
 export default function Label(props) {
-    const label: TicketItemLabel = props.component;
-    const language: LANGUAGES = props.language;
-
     return (
-        <div>
-            <p class="mt-1 text-sm/6 text-gray-600">
-                {label.getValue().getLabel(language)}
-            </p>
-        </div>
+        <label
+            for={props.componentFor ?? ""}
+            class="block text-sm/6 font-medium text-gray-900"
+        >
+            {(props.component as TicketComponentLabel).getValue().getLabel(
+                props.language,
+            )}
+        </label>
     );
 }

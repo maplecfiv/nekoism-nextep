@@ -20,105 +20,68 @@ function LoginForm(props: Props) {
 
   function processSubmit() {
     props.dispatchService.onMessage(
-      AuthService.getStaticName(),
+      AuthService.SERVICE_ID,
       AuthService.LOGIN,
       new Map([[AuthService.KEY_USER_TOKEN, "abc123"]])
     );
   }
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
-        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-          !Sign in to your account
-        </h2>
-      </div>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form
-          className="space-y-6"
-          action="#"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm/6 font-medium text-gray-900"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
+    <div className="hero bg-base-200 min-h-screen">
+      <div className="hero-content flex-col lg:flex-row-reverse">
+        <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+          <form
+            action="#"
+            className="card-body"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Email</span>
+              </label>
               <input
-                id="email"
-                name="email"
                 type="email"
-                autoComplete="email"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                placeholder="email"
+                className="input input-bordered"
                 onChange={(event) => {
                   setEmail(event.target.value);
                 }}
                 required
               />
             </div>
-          </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
-                Password
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Password</span>
               </label>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-            <div className="mt-2">
               <input
-                id="password"
-                name="password"
                 type="password"
-                autoComplete="current-password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                placeholder="password"
+                className="input input-bordered"
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
                 required
               />
+              <label className="label">
+                <a href="#" className="label-text-alt link link-hover">
+                  Forgot password?
+                </a>
+              </label>
             </div>
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={(event) => {
-                processSubmit();
-              }}
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
-        <p className="mt-10 text-center text-sm/6 text-gray-500">
-          Not a member?
-          <a
-            href="#"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
-            Start a 14 day free trial
-          </a>
-        </p>
+            <div className="form-control mt-6">
+              <button
+                className="btn btn-primary"
+                onClick={(event) => {
+                  processSubmit();
+                }}
+              >
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

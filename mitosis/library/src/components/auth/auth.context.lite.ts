@@ -1,26 +1,12 @@
-// simple.context.lite.ts
 import { createContext } from '@builder.io/mitosis';
+import { UserToken } from '@nextep/core/models/User';
 
 export default createContext({
-    _user: false,
-    _email: '',
-    _password: '',
-    setUser(_user){
-        this._user = _user;
-    },
-    getUser(){
-        return this._user;
-    },
-    setEmail(_email){
-        this._email = _email;
-    },
-    setPassword(_password){
-        this._password = _password;
-    },
-    getEmail(){
-        return this._email;
-    },
-    getPassword(){
-        return this._password;
-    }
+  _userToken: '',
+  get userToken() {
+    return this._userToken;
+  },
+  setUserToken(userToken:UserToken) {
+    this._userToken = userToken;
+  }
 });

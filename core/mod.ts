@@ -11,4 +11,4 @@ export {
     Label,
     RadioSelection,
     Section,
-} from "./models/TicketItem.ts";
+} from "./models/TicketComponent.ts";
