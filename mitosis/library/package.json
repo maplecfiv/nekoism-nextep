@@ -2,7 +2,8 @@
   "name": "@mitosis/library",
   "private": true,
   "scripts": {
-    "start": "watch \"npm run build\" ./src",
+    "start": "watch \"npm run compile-tailwind && npm run build\" ./src",
+    "compile-tailwind": "npx tailwindcss -i ./src/tailwindcss.input.css -o ./src/tailwindcss.css && cp ./src/tailwindcss.css  ../test-apps/react/",
     "build": "cp ../../node_modules/daisyui/dist/full.css ../test-apps/react/ && mitosis build --c mitosis.config.cjs",
     "lint": "eslint"
   },

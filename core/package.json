@@ -10,5 +10,10 @@
   "license": "ISC",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@types/parse": "^3.0.9",
+    "axios": "^1.7.7",
+    "parse": "^5.3.0"
+  }
 }
