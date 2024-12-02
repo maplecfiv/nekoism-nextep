@@ -20,7 +20,7 @@ function InputText(props: any) {
   }
 
   return (
-    <label className="form-control w-full max-w-xs">
+    <label className="form-control w-full ">
       <div className="label">
         <span className="label-text">
           {props.component.getValue().getLabel(props.language)}
@@ -28,15 +28,15 @@ function InputText(props: any) {
       </div>
       <input
         type="text"
-        className="input input-bordered w-full max-w-xs"
+        className="input input-bordered w-full "
         name={props.component.getId()}
         id={props.component.getId()}
-        onBlur={(event) => setInputValue}
+        onChange={(event) => setInputValue}
         value={(props.component as TicketComponentInputText)
           .getValue()
           .getValue()}
         placeholder={
-          props.component.getOption().placeHolder.get(props.language) ?? ""
+          props.component.getOption().placeHolder?.get(props.language) ?? ""
         }
       />
     </label>

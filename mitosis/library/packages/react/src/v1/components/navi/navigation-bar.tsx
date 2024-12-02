@@ -5,8 +5,12 @@ import { useState } from "react";
 export type Props = {
   dispatchService: DispatchService;
 };
-import { DispatchService } from "../../service/DispatchService";
-import { AuthService } from "../../service/AuthService";
+import { AuthService } from "@nextep/core/v1/services/client/AuthService";
+import { DispatchService } from "@nextep/core/v1/services/client/DispatchService";
+import {
+  PAGES,
+  PageService,
+} from "@nextep/core/v1/services/client/PageService";
 
 function NavigationBar(props: Props) {
   const [showAccountActions, setShowAccountActions] = useState(() => false);
@@ -24,7 +28,7 @@ function NavigationBar(props: Props) {
   async function logout() {
     await props.dispatchService.onMessage(
       AuthService.SERVICE_ID,
-      AuthService.LOGOUT
+      AuthService.ACTION_LOGOUT
     );
   }
 
@@ -62,12 +66,36 @@ function NavigationBar(props: Props) {
                   <a>Submenu 1</a>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a
+                    onClick={(event) => {
+                      const args = new Map<string, any>();
+                      args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                      props.dispatchService.onMessage(
+                        PageService.SERVICE_ID,
+                        PageService.ROUTE_TO_PAGE,
+                        args
+                      );
+                    }}
+                  >
+                    #page.formEditor.title
+                  </a>
                 </li>
               </ul>
             </li>
             <li>
-              <a>Item 3</a>
+              <a
+                onClick={(event) => {
+                  const args = new Map<string, any>();
+                  args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                  props.dispatchService.onMessage(
+                    PageService.SERVICE_ID,
+                    PageService.ROUTE_TO_PAGE,
+                    args
+                  );
+                }}
+              >
+                #page.formEditor.title
+              </a>
             </li>
           </ul>
         </div>
@@ -86,13 +114,37 @@ function NavigationBar(props: Props) {
                   <a>Submenu 1</a>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a
+                    onClick={(event) => {
+                      const args = new Map<string, any>();
+                      args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                      props.dispatchService.onMessage(
+                        PageService.SERVICE_ID,
+                        PageService.ROUTE_TO_PAGE,
+                        args
+                      );
+                    }}
+                  >
+                    #page.formEditor.title
+                  </a>
                 </li>
               </ul>
             </details>
           </li>
           <li>
-            <a>Item 3</a>
+            <a
+              onClick={(event) => {
+                const args = new Map<string, any>();
+                args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                props.dispatchService.onMessage(
+                  PageService.SERVICE_ID,
+                  PageService.ROUTE_TO_PAGE,
+                  args
+                );
+              }}
+            >
+              #page.formEditor.title
+            </a>
           </li>
         </ul>
       </div>

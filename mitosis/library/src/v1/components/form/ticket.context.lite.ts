@@ -3,7 +3,7 @@ import { createContext } from '@builder.io/mitosis';
 import {
   Form
 } from "@nextep/core/v1/models/workflow/TicketComponent";
-import { TicketService } from '../../service/TicketService';
+import { TicketService } from '@nextep/core/v1/services/client/TicketService';
 
 const initTicket = TicketService.initTicket()
 

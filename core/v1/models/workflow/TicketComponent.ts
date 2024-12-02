@@ -1,4 +1,34 @@
+import { DataObject, DataObjectType } from "../DataObject";
 import { LANGUAGES } from "../Language";
+
+export type FormElementType = DataObjectType & {
+    elementId:string,
+    labelMap: Map<LANGUAGES, string>,
+    type: string,
+    option?: any,
+    parent?: string
+}
+
+export type InputOption = {}
+
+export class FormElement extends DataObject {
+    constructor(private readonly formElementType: FormElementType) {
+        super(formElementType as DataObjectType)
+    }
+    public getType() {
+        return this.formElementType.type;
+    }
+    public getLabelMap(): Map<LANGUAGES, string> {
+        return this.formElementType.labelMap;
+    }
+    public getOption(): unknown {
+        return this.formElementType.option ?? {};
+    }
+    public getElementId():string{
+        return this.formElementType.elementId
+    }
+}
+
 export abstract class TicketComponentValueType {
 
     constructor(
@@ -27,7 +57,7 @@ export class TicketComponentSectionValue extends TicketComponentValueType {
         super(labelMap);
     }
 
-    public getValue() : TicketComponent<TicketComponentValueType>[]{
+    public getValue(): TicketComponent<TicketComponentValueType>[] {
         return this.value;
     }
 
@@ -43,7 +73,7 @@ export class TicketComponentFormValue extends TicketComponentValueType {
         super(labelMap);
     }
 
-    public getValue(): Section[]{
+    public getValue(): Section[] {
         return this.value;
     }
 
@@ -55,12 +85,12 @@ export class TicketComponentFormValue extends TicketComponentValueType {
 export class TicketComponentSelectableValue extends TicketComponentValueType {
     constructor(
         labelMap: Map<LANGUAGES, string>,
-        private value: (string | number)[],
+        private value: string,
     ) {
         super(labelMap);
     }
 
-    public getValue() : (string | number)[]{
+    public getValue(): string {
         return this.value;
     }
 
@@ -76,12 +106,76 @@ export class TicketComponentTextValue extends TicketComponentValueType {
         super(labelMap);
     }
 
-    public getValue() :string{
+    public getValue(): string {
         return this.value;
     }
 
     public getName(): string {
         return TicketComponentTextValue.name
+    }
+}
+
+export class TicketComponentDateValue extends TicketComponentValueType {
+    constructor(
+        labelMap: Map<LANGUAGES, string>,
+        private value: string,
+    ) {
+        super(labelMap);
+    }
+
+    public getValue(): string {
+        return this.value;
+    }
+    public getName(): string {
+        return TicketComponentDateValue.name
+    }
+}
+
+export class TicketComponentTimeValue extends TicketComponentValueType {
+    constructor(
+        labelMap: Map<LANGUAGES, string>,
+        private value: string,
+    ) {
+        super(labelMap);
+    }
+
+    public getValue(): string {
+        return this.value;
+    }
+    public getName(): string {
+        return TicketComponentTimeValue.name
+    }
+}
+
+export class TicketComponentFileValue extends TicketComponentValueType {
+    constructor(
+        labelMap: Map<LANGUAGES, string>,
+        private value: string,
+    ) {
+        super(labelMap);
+    }
+
+    public getValue(): string {
+        return this.value;
+    }
+    public getName(): string {
+        return TicketComponentFileValue.name
+    }
+}
+
+export class TicketComponentUrlValue extends TicketComponentValueType {
+    constructor(
+        labelMap: Map<LANGUAGES, string>,
+        private value: string,
+    ) {
+        super(labelMap);
+    }
+
+    public getValue(): string {
+        return this.value;
+    }
+    public getName(): string {
+        return TicketComponentUrlValue.name
     }
 }
 export class TicketComponentNumberValue extends TicketComponentValueType {
@@ -92,7 +186,7 @@ export class TicketComponentNumberValue extends TicketComponentValueType {
         super(labelMap);
     }
 
-    public getValue():number {
+    public getValue(): number {
         return this.value;
     }
     public getName(): string {
@@ -106,7 +200,7 @@ export class TicketComponentLabelValue extends TicketComponentValueType {
         super(labelMap);
     }
 
-    public getValue():never {
+    public getValue(): never {
         throw new Error(`Unsupported operation.  Please use labelMap to represent label content`)
     }
     public getName(): string {
@@ -117,22 +211,15 @@ export class TicketComponentLabelValue extends TicketComponentValueType {
 export abstract class TicketComponent<T extends TicketComponentValueType> {
     constructor(
         private id: string,
-        private values: T[],
+        private value: T,
     ) { }
 
     public getId(): string { return this.id; }
 
     public abstract getName(): string;
 
-    public getValues<T>() {
-        return this.values;
-    }
-
     public getValue<T>() {
-        if (this.values.length < 1) {
-            throw new Error(`${this.getName} not initialized`);
-        }
-        return this.values[0];
+        return this.value;
     }
 }
 
@@ -155,7 +242,7 @@ export class Header extends TicketComponent<TicketComponentLabelValue> {
     ) {
         super(
             id,
-            [content.getValue()],
+            content.getValue(),
         );
     }
     public getName(): string {
@@ -168,21 +255,19 @@ export class Header extends TicketComponent<TicketComponentLabelValue> {
 }
 
 
-export type FormOption = {
-    columns: number
+export type FormOption = InputOption & {
+    columns?: number
 }
 export class Form extends TicketComponent<TicketComponentFormValue> {
 
     public static readonly KEY_ELEMENTS: string = "elements";
     constructor(
         id: string,
-        private value: TicketComponentFormValue,
-        private options: FormOption = {
-            columns: 1
-        }
+        value: TicketComponentFormValue,
+        private options: FormOption = {}
     ) {
         super(id,
-            [value]
+            value
         );
     }
     public getName(): string {
@@ -192,25 +277,17 @@ export class Form extends TicketComponent<TicketComponentFormValue> {
     public getOptions(): FormOption {
         return this.options;
     }
-
-    public getValue() {
-        return this.value;
-    }
 }
 
 export class Label extends TicketComponent<TicketComponentLabelValue> {
     public static readonly KEY_CONTENT: string = "content";
     constructor(
         id: string,
-        private content: TicketComponentLabelValue,
+        value: TicketComponentLabelValue,
     ) {
         super(id,
-            [content]
+            value
         );
-    }
-
-    public getContent() {
-        return this.content;
     }
 
     public getName(): string {
@@ -218,17 +295,72 @@ export class Label extends TicketComponent<TicketComponentLabelValue> {
     }
 }
 
-export type InputTextOption = {
-    number: number,
-    maxLength: number,
-    shouldSecure: boolean,
-    allowAlpha: boolean,
-    allowDigit: boolean,
-    allowSymbol: boolean,
-    allowLeadingSpace: boolean,
-    allowTrailingSpace: boolean,
-    allowMiddleSpace: boolean,
-    placeHolder: Map<LANGUAGES, string>
+export type InputFileOption = InputOption & {
+    acceptedExtensions?: string[],
+    acceptedFileSize?: number,
+    isMultiple?: boolean
+}
+
+export class InputFile extends TicketComponent<TicketComponentFileValue> {
+    public static readonly KEY_VALUE: string = "value";
+    constructor(
+        id: string,
+        value: TicketComponentFileValue,
+        private options: InputFileOption = {
+            acceptedExtensions: [],
+            acceptedFileSize: -1,
+            isMultiple: true
+        },
+    ) {
+        super(id,
+            value
+        );
+    }
+    public getName(): string {
+        return `${InputFile.name}`;
+    }
+    public getOption() {
+        return this.options;
+    }
+}
+
+export type InputUrlOption = InputOption & {
+    number?: number,
+    maxLength?: number,
+    pattern?: string,
+    placeHolder?: Map<LANGUAGES, string>
+}
+
+export class InputUrl extends TicketComponent<TicketComponentUrlValue> {
+    public static readonly KEY_VALUE: string = "value";
+    constructor(
+        id: string,
+        value: TicketComponentUrlValue,
+        private options: InputUrlOption = {},
+    ) {
+        super(id,
+            value
+        );
+    }
+    public getName(): string {
+        return `${InputUrl.name}`;
+    }
+    public getOption() {
+        return this.options;
+    }
+}
+
+export type InputTextOption = InputOption & {
+    number?: number,
+    maxLength?: number,
+    shouldSecure?: boolean,
+    allowAlpha?: boolean,
+    allowDigit?: boolean,
+    allowSymbol?: boolean,
+    allowLeadingSpace?: boolean,
+    allowTrailingSpace?: boolean,
+    allowMiddleSpace?: boolean,
+    placeHolder?: Map<LANGUAGES, string>
 }
 
 export class InputText extends TicketComponent<TicketComponentTextValue> {
@@ -236,21 +368,10 @@ export class InputText extends TicketComponent<TicketComponentTextValue> {
     constructor(
         id: string,
         value: TicketComponentTextValue,
-        private options: InputTextOption = {
-            number: 0,
-            maxLength: 0,
-            shouldSecure: false,
-            allowAlpha: false,
-            allowDigit: false,
-            allowSymbol: false,
-            allowLeadingSpace: false,
-            allowTrailingSpace: false,
-            allowMiddleSpace: false,
-            placeHolder: new Map<LANGUAGES, string>()
-        },
+        private options: InputTextOption = {},
     ) {
         super(id,
-            [value]
+            value
         );
     }
     public getName(): string {
@@ -267,28 +388,22 @@ export enum FLOATING_POINT_OPTIONS {
     F2,
 }
 
-export type InputNumberOption = {
-    minNumber: number,
-    maxNumber: number,
-    allowNegative: boolean,
-    allowFloatingPoint: FLOATING_POINT_OPTIONS,
-    placeHolder: Map<LANGUAGES, string>
+export type InputNumberOption = InputOption & {
+    minNumber?: number,
+    maxNumber?: number,
+    allowNegative?: boolean,
+    allowFloatingPoint?: FLOATING_POINT_OPTIONS,
+    placeHolder?: Map<LANGUAGES, string>
 }
 export class InputNumber extends TicketComponent<TicketComponentNumberValue> {
     public static readonly KEY_VALUE: string = "value";
     constructor(
         id: string,
         value: TicketComponentNumberValue,
-        private option: InputNumberOption = {
-            minNumber: 0,
-            maxNumber: 0,
-            allowNegative: false,
-            allowFloatingPoint: FLOATING_POINT_OPTIONS.F0,
-            placeHolder: new Map<LANGUAGES, string>()
-        },
+        private option: InputNumberOption = {},
     ) {
         super(id,
-            [value]
+            value
         );
     }
     public getName(): string {
@@ -298,19 +413,75 @@ export class InputNumber extends TicketComponent<TicketComponentNumberValue> {
         return this.option;
     }
 }
+
+export type InputDateOption = InputOption & {
+    minDate?: string,
+    maxDate?: string,
+    step?: number
+}
+export class InputDate extends TicketComponent<TicketComponentDateValue> {
+    public static readonly KEY_VALUE: string = "value";
+    constructor(
+        id: string,
+        value: TicketComponentDateValue,
+        private option: InputDateOption = {},
+    ) {
+        super(id,
+            value
+        );
+    }
+    public getName(): string {
+        return `${InputDate.name}`;
+    }
+    public getOption(): InputDateOption {
+        return this.option;
+    }
+}
+
+export type InputTimeOption = InputOption & {
+    minDate?: string,
+    maxDate?: string,
+    step?: number
+}
+export class InputTime extends TicketComponent<TicketComponentTimeValue> {
+    public static readonly KEY_VALUE: string = "value";
+    constructor(
+        id: string,
+        value: TicketComponentTimeValue,
+        private option: InputTimeOption = {},
+    ) {
+        super(id,
+            value
+        );
+    }
+    public getName(): string {
+        return `${InputTime.name}`;
+    }
+    public getOption(): InputTimeOption {
+        return this.option;
+    }
+}
+
+export type SelectableOption = InputOption & {
+    isMultiple?: boolean,
+    values?: TicketComponentSelectableValue[]
+}
 abstract class Selectable extends TicketComponent<TicketComponentSelectableValue> {
     public static readonly KEY_VALUE: string = "value";
     constructor(
         id: string,
-        private isMultiple: boolean,
-        values: TicketComponentSelectableValue[],
+        value: TicketComponentSelectableValue,
+        private option: SelectableOption = {},
+
     ) {
         super(id,
-            values,
+            value,
         );
     }
-    public getIsMultiple(): boolean {
-        return this.isMultiple;
+    public abstract getName(): string;
+
+    public getOption(): SelectableOption {
+        return this.option;
     }
 }
 export class RadioSelection extends Selectable {
@@ -335,17 +506,13 @@ export class Section extends TicketComponent<TicketComponentSectionValue> {
     public static readonly KEY_ELEMENTS: string = "elements";
     constructor(
         id: string,
-        private value: TicketComponentSectionValue
+        value: TicketComponentSectionValue
     ) {
         super(id,
-            [value],
+            value,
         );
     }
     public getName(): string {
         return `${Section.name}`;
-    }
-
-    public getValue<T>(): TicketComponentSectionValue {
-        return this.value;
     }
 }

@@ -1,6 +1,7 @@
 import { useStore } from "@builder.io/mitosis";
-import { DispatchService } from "../../service/DispatchService";
-import { AuthService } from "../../service/AuthService";
+import { AuthService } from "@nextep/core/v1/services/client/AuthService";
+import { DispatchService } from "@nextep/core/v1/services/client/DispatchService";
+import { PAGES, PageService } from "@nextep/core/v1/services/client/PageService";
 
 export type Props = {
     dispatchService: DispatchService;
@@ -17,10 +18,7 @@ export default function NavigationBar(props: Props) {
             state.showMobileMenu = !state.showMobileMenu;
         },
         async logout() {
-            await props.dispatchService.onMessage(
-                AuthService.SERVICE_ID,
-                AuthService.LOGOUT,
-            );
+            await props.dispatchService.onMessage(AuthService.SERVICE_ID, AuthService.ACTION_LOGOUT);
         },
     });
 
@@ -62,12 +60,20 @@ export default function NavigationBar(props: Props) {
                                     <a>Submenu 1</a>
                                 </li>
                                 <li>
-                                    <a>Submenu 2</a>
+                                    <a onClick={() => {
+                                        const args = new Map<string, any>();
+                                        args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                                        props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                                    }}>#page.formEditor.title</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a>Item 3</a>
+                            <a onClick={() => {
+                                const args = new Map<string, any>();
+                                args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                                props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                            }}>#page.formEditor.title</a>
                         </li>
                     </ul>
                 </div>
@@ -86,13 +92,21 @@ export default function NavigationBar(props: Props) {
                                     <a>Submenu 1</a>
                                 </li>
                                 <li>
-                                    <a>Submenu 2</a>
+                                    <a onClick={() => {
+                                        const args = new Map<string, any>();
+                                        args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                                        props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                                    }}>#page.formEditor.title</a>
                                 </li>
                             </ul>
                         </details>
                     </li>
                     <li>
-                        <a>Item 3</a>
+                        <a onClick={() => {
+                            const args = new Map<string, any>();
+                            args.set(PageService.PAGE_KEY, PAGES.FORM_DESIGNER);
+                            props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                        }}>#page.formEditor.title</a>
                     </li>
                 </ul>
             </div>

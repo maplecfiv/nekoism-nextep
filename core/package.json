@@ -14,6 +14,7 @@
   "dependencies": {
     "@types/parse": "^3.0.9",
     "axios": "^1.7.7",
-    "parse": "^5.3.0"
+    "parse": "^5.3.0",
+    "uuid": "^11.0.3"
   }
 }

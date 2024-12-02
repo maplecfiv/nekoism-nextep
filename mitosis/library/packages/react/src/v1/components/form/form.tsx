@@ -7,17 +7,14 @@ import Section from "./section";
 function Form(props: any) {
   const [page, setPage] = useState(() => 0);
 
-  const [elementsPerPage, setElementsPerPage] = useState(() => 4);
-
   function createSections(ticketComponentForm: TicketComponentForm) {
     return ticketComponentForm
       .getValue()
-      .getValue()
-      .filter((_, index) => {
-        const from = page * elementsPerPage;
-        const to = from + elementsPerPage;
-        return index >= from && index < to;
-      })
+      .getValue() /*.filter((_, index) => {
+                                               const from = page * state.elementsPerPage;
+                                               const to = from + state.elementsPerPage;
+                                               return index >= from && index < to;
+                                               })*/
       .map((element, index) => {
         return (
           <Section
@@ -30,32 +27,17 @@ function Form(props: any) {
   }
 
   function createPages(ticketComponentForm: TicketComponentForm) {
-    return ticketComponentForm
-      .getValue()
-      .getValue()
-      .filter((_, idx) => {
-        return (
-          idx <
-          Math.ceil(
-            ticketComponentForm.getValue().getValue().length / elementsPerPage
-          )
-        );
-      })
-      .map((_, idx) => {
-        return (
-          <button
-            key={`btn-page-${idx}`}
-            onClick={() => {
-              setPage(idx);
-            }}
-            className={
-              idx == page ? "btn-active join-item btn" : "join-item btn"
-            }
-          >
-            {idx + 1}
-          </button>
-        );
-      });
+    /*
+return ticketComponentForm.getValue().getValue().filter((_, idx) => {
+  return (idx < Math.ceil(ticketComponentForm.getValue().getValue().length / state.elementsPerPage))
+}).map((_, idx) => {
+  return (
+  <div className="join">
+  <button key={`btn-page-${idx}`} onClick={() => { setPage(idx) }} className={idx == page ? "btn-active join-item btn" : "join-item btn"}>{idx + 1}</button>
+  </div>)
+});
+*/
+    return <></>;
   }
 
   function createForm(ticketComponentForm: TicketComponentForm) {
@@ -70,10 +52,12 @@ function Form(props: any) {
         <div className={`grid grid-cols-2 gap-4`}>
           {createSections(ticketComponentForm)}
         </div>
-        <div className="join">{createPages(ticketComponentForm)}</div>
+        {createPages(ticketComponentForm)}
       </form>
     );
   }
+
+  const [elementsPerPage, setElementsPerPage] = useState(() => null);
 
   return (
     <div className="container mx-auto">

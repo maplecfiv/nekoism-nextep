@@ -1,3 +1,5 @@
+import { VERSION } from "../config";
+
 export enum DATA_STATUS {
     ACTIVE = 'active',
     INACTIVE = 'inactive'
@@ -6,6 +8,10 @@ export enum DATA_STATUS {
 export type ObjectId = string;
 export type ISO8601Date = Date;
 
+export type DataObjectType = {
+    objectId?: ObjectId, createdAt?: ISO8601Date, updatedAt?: ISO8601Date, createdBy?: ObjectId, updatedBy?: ObjectId, status?: DATA_STATUS, version?: string
+}
+
 export class DataObject {
-    constructor(readonly objectId: ObjectId, readonly createdAt: ISO8601Date, readonly updatedAt: ISO8601Date, private readonly createdBy: ObjectId, private readonly updatedBy: ObjectId, private status: DATA_STATUS, private readonly version: string) {}
+    constructor(protected readonly dataObjectType: DataObjectType) { }
 }

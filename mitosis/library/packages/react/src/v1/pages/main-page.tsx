@@ -1,22 +1,22 @@
 "use client";
 import * as React from "react";
 import { useState, useEffect } from "react";
-
-export type StoreType = {
-  userToken: string;
-  dispatchEvent: (parms: object[]) => void;
-};
 import NavigationBar from "../components/navi/navigation-bar";
-import LoginForm from "../components/auth/login-form";
-import { AuthService } from "../service/AuthService";
-import { TicketService } from "../service/TicketService";
+import { AuthService } from "@nextep/core/v1/services/client/AuthService";
+import { TicketService } from "@nextep/core/v1/services/client/TicketService";
 import Form from "../components/form/form";
-import { PAGES, PageService } from "../service/PageService";
-import { DispatchService } from "../service/DispatchService";
+import {
+  PAGES,
+  PageService,
+} from "@nextep/core/v1/services/client/PageService";
+import { DispatchService } from "@nextep/core/v1/services/client/DispatchService";
 import { LANGUAGES } from "@nextep/core/v1/models/Language";
+import UnauthorizedPage from "./unauthorized-page";
+import FormEditorPage from "./form-editor-page";
+import { BaseService } from "@nextep/core/v1/services/BaseService";
 
 function MainPage(props: any) {
-  const [page, setPage] = useState(() => PAGES.LOGIN);
+  const [page, setPage] = useState(() => PAGES.UNAUTHORIZED);
 
   const [userToken, setUserToken] = useState(() => "");
 
@@ -28,35 +28,54 @@ function MainPage(props: any) {
     () => new DispatchService()
   );
 
-  const [authService, setAuthService] = useState(
-    () => new AuthService(userToken, setUserToken)
-  );
-
-  const [pageService, setPageService] = useState(
-    () => new PageService(setPage)
-  );
-
-  const [ticketService, setTicketService] = useState(
-    () => new TicketService(setTicket)
-  );
+  const [searchParams, setSearchParams] = useState(() => props.searchParams);
 
   useEffect(() => {
-    dispatchService.addService(AuthService.SERVICE_ID, authService);
-    dispatchService.addService(PageService.SERVICE_ID, pageService);
-    dispatchService.addService(TicketService.SERVICE_ID, ticketService);
+    if (!searchParams.get("t")) {
+      dispatchService.onMessage(
+        PageService.SERVICE_ID,
+        PageService.ROUTE_TO_PAGE,
+        BaseService.createArguments({
+          key: PageService.PAGE_KEY,
+          value: PAGES.UNAUTHORIZED,
+        })
+      );
+      return;
+    }
+    dispatchService.addService(
+      AuthService.SERVICE_ID,
+      new AuthService(searchParams.get("t"), setUserToken)
+    );
+    dispatchService.addService(
+      PageService.SERVICE_ID,
+      new PageService(setPage)
+    );
+    dispatchService.addService(
+      TicketService.SERVICE_ID,
+      new TicketService(setTicket)
+    );
+    dispatchService.onMessage(
+      PageService.SERVICE_ID,
+      PageService.ROUTE_TO_PAGE,
+      BaseService.createArguments({
+        key: PageService.PAGE_KEY,
+        value: PAGES.DASHBOARD,
+      })
+    );
   }, []);
 
   return (
     <>
-      {page == PAGES.LOGIN ? (
-        <LoginForm dispatchService={dispatchService} />
+      {page != PAGES.UNAUTHORIZED ? (
+        <>
+          <NavigationBar dispatchService={dispatchService} />
+          {page == PAGES.DASHBOARD ? (
+            <Form language={language} component={ticket} />
+          ) : null}
+          {page == PAGES.FORM_DESIGNER ? <FormEditorPage /> : null}
+        </>
       ) : null}
-      {page != PAGES.LOGIN ? (
-        <NavigationBar dispatchService={dispatchService} />
-      ) : null}
-      {page == PAGES.DASHBOARD ? (
-        <Form language={language} component={ticket} />
-      ) : null}
+      {page == PAGES.UNAUTHORIZED ? <UnauthorizedPage /> : null}
     </>
   );
 }

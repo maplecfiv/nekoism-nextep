@@ -1,9 +1,9 @@
 import { MainPage } from '@mitosis/library-react';
 
-function App() {
+function App(url) {
   return (
     <div>
-      <MainPage />
+      <MainPage url={url}/>
     </div>
   );
 }

@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "start": "watch \"npm run compile-tailwind && npm run build\" ./src",
-    "compile-tailwind": "npx tailwindcss -i ./src/tailwindcss.input.css -o ./src/tailwindcss.css && cp ./src/tailwindcss.css  ../test-apps/react/",
-    "build": "cp ../../node_modules/daisyui/dist/full.css ../test-apps/react/ && mitosis build --c mitosis.config.cjs",
+    "compile-tailwind": "npx tailwindcss -i ./src/tailwindcss.input.css -o ../../nextjs/src/app/tailwindcss.css",
+    "build": "mitosis build --c mitosis.config.cjs",
     "lint": "eslint"
   },
   "type": "module",
@@ -19,6 +19,8 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8.51.0",
     "postcss": "^8.4.49",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
     "sortablejs": "^1.15.3",
     "uuid": "^11.0.3"
   },

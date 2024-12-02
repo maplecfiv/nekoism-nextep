@@ -18,7 +18,7 @@
     "mitosis/library/packages/*",
     "mitosis/library",
     "mitosis/test-apps/*",
-    "next"
+    "nextjs"
   ],
   "devDependencies": {
     "@types/node": "^22.8.6",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "nextep": "^1.0.0-security",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106"
   }
 }
