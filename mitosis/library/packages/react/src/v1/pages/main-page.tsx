@@ -5,6 +5,7 @@ import NavigationBar from "../components/navi/navigation-bar";
 import { AuthService } from "@nextep/core/v1/services/client/AuthService";
 import { TicketService } from "@nextep/core/v1/services/client/TicketService";
 import Form from "../components/form/form";
+import LoadingPage from "./loading-page";
 import {
   PAGES,
   PageService,
@@ -14,9 +15,10 @@ import { LANGUAGES } from "@nextep/core/v1/models/Language";
 import UnauthorizedPage from "./unauthorized-page";
 import FormEditorPage from "./form-editor-page";
 import { BaseService } from "@nextep/core/v1/services/BaseService";
+import DashboardPage from "./dashbaord-page";
 
 function MainPage(props: any) {
-  const [page, setPage] = useState(() => PAGES.UNAUTHORIZED);
+  const [page, setPage] = useState(() => PAGES.LOADING);
 
   const [userToken, setUserToken] = useState(() => "");
 
@@ -66,16 +68,20 @@ function MainPage(props: any) {
 
   return (
     <>
-      {page != PAGES.UNAUTHORIZED ? (
+      {page == PAGES.LOADING ? <LoadingPage /> : null}
+      {page == PAGES.UNAUTHORIZED ? <UnauthorizedPage /> : null}
+      {page != PAGES.UNAUTHORIZED && page != PAGES.LOADING ? (
         <>
           <NavigationBar dispatchService={dispatchService} />
           {page == PAGES.DASHBOARD ? (
+            <DashboardPage language={language} component={ticket} />
+          ) : null}
+          {page == PAGES.START_WORKFLOW ? (
             <Form language={language} component={ticket} />
           ) : null}
           {page == PAGES.FORM_DESIGNER ? <FormEditorPage /> : null}
         </>
       ) : null}
-      {page == PAGES.UNAUTHORIZED ? <UnauthorizedPage /> : null}
     </>
   );
 }

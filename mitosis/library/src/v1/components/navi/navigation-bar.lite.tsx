@@ -51,7 +51,11 @@ export default function NavigationBar(props: Props) {
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
                     >
                         <li>
-                            <a>Item 1</a>
+                            <a onClick={() => {
+                                const args = new Map<string, any>();
+                                args.set(PageService.PAGE_KEY, PAGES.START_WORKFLOW);
+                                props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                            }}>#page.startWorkflow</a>
                         </li>
                         <li>
                             <a>Parent</a>
@@ -82,7 +86,11 @@ export default function NavigationBar(props: Props) {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li>
-                        <a>Item 1</a>
+                        <a onClick={() => {
+                            const args = new Map<string, any>();
+                            args.set(PageService.PAGE_KEY, PAGES.START_WORKFLOW);
+                            props.dispatchService.onMessage(PageService.SERVICE_ID, PageService.ROUTE_TO_PAGE, args)
+                        }}>#page.startWorkflow</a>
                     </li>
                     <li>
                         <details>

@@ -27,6 +27,9 @@ export class FormElement extends DataObject {
     public getElementId():string{
         return this.formElementType.elementId
     }
+    public getParent():string | undefined{
+        return this.formElementType.parent;
+    }
 }
 
 export abstract class TicketComponentValueType {

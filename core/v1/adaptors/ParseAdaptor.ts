@@ -16,15 +16,17 @@ export type BatchRequestItem = {
 
 export class ParseAdaptor extends DataAdaptor {
 
+    private static readonly instance = axios.create({
+        headers: {
+            'X-Parse-Application-Id': 'APPLICATION_ID',
+            'X-Parse-Master-Key': 'MASTER_KEY',
+            'Content-Type': 'application/json'
+        },
+        baseURL: `${process.env.parseServer}/parse/`
+    });
+
     public static getInstance() {
-        return axios.create({
-            headers: {
-                'X-Parse-Application-Id': process.env.parseAppId,
-                'X-Parse-Master-Key': process.env.parseMasterId,
-                'Content-Type': 'application/json'
-            },
-            baseURL: `${process.env.parseServer}/parse/`
-        })
+        return ParseAdaptor.instance
     }
 
     public async findObject(entity: string, id: string): Promise<AxiosResponse> {

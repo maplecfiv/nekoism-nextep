@@ -5,7 +5,9 @@ export enum PAGES {
   LOGIN,
   DASHBOARD,
   FORM_DESIGNER,
+  START_WORKFLOW,
   UNAUTHORIZED,
+  LOADING
 }
 export class PageService extends BaseService {
   public static readonly SERVICE_ID: ServiceId = PageService.name;
